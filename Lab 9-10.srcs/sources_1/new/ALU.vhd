@@ -82,9 +82,9 @@ component Add_Sub_4
            Flag_Reg : out STD_LOGIC_VECTOR (3 downto 0));           
 end component;
 
-component Multiplier
-    Port ( A : in STD_LOGIC_VECTOR (1 downto 0);
-           B : in STD_LOGIC_VECTOR (1 downto 0);
+component Multiplier_4
+    Port ( A : in STD_LOGIC_VECTOR (3 downto 0);
+           B : in STD_LOGIC_VECTOR (3 downto 0);
            Y : out STD_LOGIC_VECTOR (3 downto 0));
 end component;  
 
@@ -120,11 +120,11 @@ begin
         );
 
      
-     Multiplier_Unit : Multiplier
+     Multiplier_Unit : Multiplier_4
         port map (
-            A => A(1 downto 0),
-            B => B(1 downto 0),
-            Y => A_into_B
+            A => A(3 downto 0),
+            B => B(3 downto 0),
+            Y => A_into_B (3 downto 0)
          );
          
      MUX_2 : Mux_4_4
@@ -151,6 +151,6 @@ Flag_Reg(0) <= Flags(0) AND Flag_EN;
 Flag_Reg(1) <= Flags(1) AND Flag_EN;
 Flag_Reg(2) <= Flags(2) AND Flag_EN;
 Flag_Reg(3) <= Flags(3) AND Flag_EN;
-Y <= A_plus_B;
+Y <= Mux_2_out;
 
 end Behavioral;

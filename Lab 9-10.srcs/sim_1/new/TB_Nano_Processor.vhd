@@ -72,6 +72,7 @@ process begin
 end process;
 
 process begin 
+    
     Reset <= '1';
     wait for 100 ns;
     

@@ -35,23 +35,23 @@ use ieee.numeric_std.all;
 
 entity ROM is
     Port ( address : in STD_LOGIC_VECTOR (2 downto 0);
-           data : out STD_LOGIC_VECTOR (11 downto 0));
+           data : out STD_LOGIC_VECTOR (12 downto 0));
 end ROM;
 
 architecture Behavioral of ROM is
 
-type rom_type is array (0 to 7) of std_logic_vector(11 downto 0);
+type rom_type is array (0 to 7) of std_logic_vector(12 downto 0);
 signal prosseser_ROM : rom_type := (
 
 --        process => 3 + 2 + 1 = 6   
---        "100010000100", -- MOVI R1,4        R1 <- 4             0
---        "100100000001", -- MOVI R2,1        R2 <- 1             1
---        "010100000000", -- NEG  R2          R2 <- -1            2
---        "000010100010", -- ADD  R1,R2       R1 <- R2 + R1       3
---        "110010000111", -- JZR  R1,7                            4
---        "001110010010", -- ADD  R7,R1       R7 <- R7 + R1       5
---        "110000000011", -- JZR  R0,3                            6
---        "110000000111" -- JZR  R0,7                             7 
+--        "0100010000100", -- MOVI R1,4        R1 <- 4             0
+--        "0100100000001", -- MOVI R2,1        R2 <- 1             1
+--        "0010100000000", -- NEG  R2          R2 <- -1            2
+--       "0000010100010", -- ADD  R1,R2       R1 <- R2 + R1       3
+--        "0110010000111", -- JZR  R1,7                            4
+--        "0001110010010", -- ADD  R7,R1       R7 <- R7 + R1       5
+--        "0110000000011", -- JZR  R0,3                            6
+--        "0110000000111" -- JZR  R0,7                             7 
  
 --        process => (-1) AND 5 = 5       
 --        "101110001111", -- MOVI R7,-1     R7 <- -1
@@ -104,14 +104,14 @@ signal prosseser_ROM : rom_type := (
 --        "000000000000"  
 
 --        process => 3 MUL 2 = 6       
-        "101110000011", -- MOVI R7,3     R7 <- 3
-        "100010000010", -- MOVI R1,2     R1 <- 2
-        "001110010111", -- MUL  R7,R1    R7 <- R7 MUL R1
-        "110000000011", -- JZR  R0,3
-        "000000000000", 
-        "000000000000", 
-        "000000000000", 
-        "000000000000"
+        "0101110000011", -- MOVI R7,3     R7 <- 3
+        "0100010000010", -- MOVI R1,2     R1 <- 2
+        "1101110010000", -- MUL  R7,R1    R7 <- R7 MUL R1
+        "0110000000011", -- JZR  R0,3
+        "0000000000000", 
+        "0000000000000", 
+        "0000000000000", 
+        "0000000000000"
            
     ); 
 

@@ -89,7 +89,7 @@ component Program_Counter
 end component;
 
 component Instruction_Decoder 
-    Port ( Instruction_Bus : in STD_LOGIC_VECTOR (11 downto 0);
+    Port ( Instruction_Bus : in STD_LOGIC_VECTOR (12 downto 0);
            Reg_Check_Jump : in STD_LOGIC_VECTOR (3 downto 0);
            Reg_Sele1 : out STD_LOGIC_VECTOR (2 downto 0);
            Reg_Sele2 : out STD_LOGIC_VECTOR (2 downto 0);
@@ -105,7 +105,7 @@ end component;
 
 component ROM 
     Port ( address : in STD_LOGIC_VECTOR (2 downto 0);
-           data : out STD_LOGIC_VECTOR (11 downto 0));
+           data : out STD_LOGIC_VECTOR (12 downto 0));
 end component;
 
 component Mux_2_3 
@@ -153,7 +153,7 @@ signal Load_sele, Jump_Flag, Flag_EN_ALU, Comp_EN_ALU : std_logic;
 signal Mem_Selector, Output_2_3bit_MUX ,Address_to_Jump, Output_3bit_Adder : std_logic_vector(2 downto 0);
 signal Selector_8_4bit_MUX_1, Selector_8_4bit_MUX_2, Reg_EN: std_logic_vector(2 downto 0);
 
-signal Instruction_Bus: std_logic_vector(11 downto 0);
+signal Instruction_Bus: std_logic_vector(12 downto 0);
 
 signal Output_8_4bit_MUX_1,Output_8_4bit_MUX_2, Immediate_Value ,Output_2_4bit_MUX : std_logic_vector(3 downto 0);
 signal R0_Out,R1_Out,R2_Out,R3_Out,R4_Out,R5_Out,R6_Out,R7_Out : std_logic_vector (3 downto 0);
