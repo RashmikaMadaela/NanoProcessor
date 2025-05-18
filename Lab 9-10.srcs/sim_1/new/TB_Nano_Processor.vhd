@@ -41,9 +41,6 @@ component Nano_Processor
         Port (  Clk : in STD_LOGIC;
                Reset : in STD_LOGIC;
                Flags : out STD_LOGIC_VECTOR( 3 downto 0);
-               Comp_equal : out STD_LOGIC;      
-               Comp_greater : out STD_LOGIC;     
-               Comp_lesser : out STD_LOGIC ;
                Dis_LED : out STD_LOGIC_VECTOR (3 downto 0);
                Dis_7Seg : out STD_LOGIC_VECTOR (6 downto 0);
                Comparator_out : out STD_LOGIC_VECTOR (2 downto 0);

@@ -35,9 +35,6 @@ entity Nano_Processor is
     Port ( Clk : in STD_LOGIC;
            Reset : in STD_LOGIC;
            Flags : out STD_LOGIC_VECTOR( 3 downto 0);
-           Comp_equal : out STD_LOGIC;      
-           Comp_greater : out STD_LOGIC;     
-           Comp_lesser : out STD_LOGIC ;
            Dis_LED : out STD_LOGIC_VECTOR (3 downto 0);
            Dis_7Seg : out STD_LOGIC_VECTOR (6 downto 0);
            Comparator_out : out STD_LOGIC_VECTOR (2 downto 0);
@@ -263,9 +260,9 @@ begin
             Comp_EN => Comp_EN_ALU,
             Y => ALU_Output,
             Flag_Reg => Flag_Reg, 
-            equal => Comp_equal,
-            greater => Comp_greater, 
-            lesser => Comp_lesser); 
+            equal => Comparator_out(0),
+            greater => Comparator_out(1), 
+            lesser => Comparator_out(2)); 
          
                   
      Adder_3_bit : Adder_3 
@@ -278,6 +275,7 @@ begin
             address => Display_out, 
             data => Dis_7Seg
          );
+
  
 Display_out <= R7_Out; 
 Flags <= Flag_Reg;  

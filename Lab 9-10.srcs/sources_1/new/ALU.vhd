@@ -48,31 +48,31 @@ end ALU;
 
 architecture Behavioral of ALU is
 
---component Comp_4_bit is
-    --Port ( num1 : in STD_LOGIC_VECTOR(3 downto 0);
-           --num2 : in STD_LOGIC_VECTOR(3 downto 0);
-           --EN : in STD_LOGIC;
-           --equal : out STD_LOGIC;      
-           --greater : out STD_LOGIC;     
-           --lesser : out STD_LOGIC );   
---end component;
+component Comp_4 is
+    Port ( num1 : in STD_LOGIC_VECTOR(3 downto 0);
+           num2 : in STD_LOGIC_VECTOR(3 downto 0);
+           EN : in STD_LOGIC;
+           equal : out STD_LOGIC;      
+           greater : out STD_LOGIC;     
+           lesser : out STD_LOGIC );   
+end component;
 
---component MUX_2way_4bit 
-    --Port ( A : in STD_LOGIC_VECTOR (3 downto 0);
-           --B : in STD_LOGIC_VECTOR (3 downto 0);
-           --Selector : in STD_LOGIC;
-           --Mux_out : out STD_LOGIC_VECTOR (3 downto 0));
---end component;  
+component Mux_2_4
+    Port ( A : in STD_LOGIC_VECTOR (3 downto 0);
+           B : in STD_LOGIC_VECTOR (3 downto 0);
+           Selector : in STD_LOGIC;
+           Mux_out : out STD_LOGIC_VECTOR (3 downto 0));
+end component;  
 
---component MUX_4way_4bit 
-    --Port (
-       --A1 : in STD_LOGIC_VECTOR (3 downto 0);
-       --A2 : in STD_LOGIC_VECTOR (3 downto 0);
-       --A3 : in STD_LOGIC_VECTOR (3 downto 0);
-       --A4 : in STD_LOGIC_VECTOR (3 downto 0);      
-       --Selector : in STD_LOGIC_VECTOR (1 downto 0);
-       --Output : out STD_LOGIC_VECTOR (3 downto 0));
---end component;
+component Mux_4_4 
+    Port (
+       A1 : in STD_LOGIC_VECTOR (3 downto 0);
+       A2 : in STD_LOGIC_VECTOR (3 downto 0);
+       A3 : in STD_LOGIC_VECTOR (3 downto 0);
+       A4 : in STD_LOGIC_VECTOR (3 downto 0);      
+       Selector : in STD_LOGIC_VECTOR (1 downto 0);
+       Output : out STD_LOGIC_VECTOR (3 downto 0));
+end component;
 
 component Add_Sub_4
     Port ( A : in STD_LOGIC_VECTOR (3 downto 0);
@@ -82,33 +82,33 @@ component Add_Sub_4
            Flag_Reg : out STD_LOGIC_VECTOR (3 downto 0));           
 end component;
 
---component Multiplier_2by2 
-    --Port ( A : in STD_LOGIC_VECTOR (1 downto 0);
-           --B : in STD_LOGIC_VECTOR (1 downto 0);
-           --Y : out STD_LOGIC_VECTOR (3 downto 0));
---end component;  
+component Multiplier
+    Port ( A : in STD_LOGIC_VECTOR (1 downto 0);
+           B : in STD_LOGIC_VECTOR (1 downto 0);
+           Y : out STD_LOGIC_VECTOR (3 downto 0));
+end component;  
 
---signal not_B : std_logic_vector (3 downto 0);
---signal Mux_1_out, Mux_2_out : std_logic_vector (3 downto 0);
---signal A_AND_B : std_logic_vector (3 downto 0);
---signal A_OR_B : std_logic_vector (3 downto 0);
+signal not_B : std_logic_vector (3 downto 0);
+signal Mux_1_out, Mux_2_out : std_logic_vector (3 downto 0);
+signal A_AND_B : std_logic_vector (3 downto 0);
+signal A_OR_B : std_logic_vector (3 downto 0);
 signal A_plus_B : std_logic_vector (3 downto 0);
---signal A_into_B : std_logic_vector (3 downto 0);
+signal A_into_B : std_logic_vector (3 downto 0);
 signal Flags : std_logic_vector (3 downto 0);
 
 begin
-    --not_B <= NOT B;
+    not_B <= NOT B;
     
-    --MUX_1 : MUX_2way_4bit
-       -- port map(
-           -- A => B,
-           -- B => not_B,
-            --Selector => Selector(2),
-            --Mux_out => Mux_1_out
-        --);
+    MUX_1 : Mux_2_4
+        port map(
+            A => B,
+            B => not_B,
+            Selector => Selector(2),
+            Mux_out => Mux_1_out
+        );
         
-    --A_AND_B <= Mux_1_out AND A;
-    --A_OR_B <= Mux_1_out OR A;
+    A_AND_B <= Mux_1_out AND A;
+    A_OR_B <= Mux_1_out OR A;
     
     ADD_SUB_UNIT : Add_Sub_4
         port map(
@@ -120,31 +120,31 @@ begin
         );
 
      
-     --Multiplier : Multiplier_2by2
-        --port map (
-            --A => A(1 downto 0),
-            --B => B(1 downto 0),
-            --Y => A_into_B
-         --);
+     Multiplier_Unit : Multiplier
+        port map (
+            A => A(1 downto 0),
+            B => B(1 downto 0),
+            Y => A_into_B
+         );
          
-     --MUX_2 : MUX_4way_4bit
-        --port map(
-            --A1 => A_AND_B,
-            --A2 => A_OR_B,
-            --A3 => A_plus_B,
-            --A4 => A_into_B,      
-            --Selector => Selector(1 downto 0),
-            --Output => Mux_2_out
-         --);
+     MUX_2 : Mux_4_4
+        port map(
+            A1 => A_AND_B,
+            A2 => A_OR_B,
+            A3 => A_plus_B,
+            A4 => A_into_B,      
+            Selector => Selector(1 downto 0),
+            Output => Mux_2_out
+         );
          
-     --Comparator : Comp_4_bit
-        --port map(
-            --num1 => A,
-            --num2=>B,
-            --EN => Comp_EN,
-            --equal => equal,     
-            --greater => greater,  
-            --lesser => lesser);  
+     Comparator : Comp_4
+        port map(
+            num1 => A,
+            num2=>B,
+            EN => Comp_EN,
+            equal => equal,     
+            greater => greater,  
+            lesser => lesser);  
             
 
 Flag_Reg(0) <= Flags(0) AND Flag_EN;
