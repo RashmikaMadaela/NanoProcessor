@@ -1,0 +1,4 @@
+Running: xsim.dir/TB_Nano_Processor_behav/xsimk.exe -simmode gui -wdb TB_Nano_Processor_behav.wdb -simrunnum 0 -socket 64879
+Design successfully loaded
+Design Loading Memory Usage: 7784 KB (Peak: 7784 KB)
+Design Loading CPU Usage: 0 ms
