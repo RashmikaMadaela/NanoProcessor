@@ -43,6 +43,9 @@ entity Instruction_Decoder is
            Flag_EN : out STD_LOGIC; -- Enable the Flags in ALU
            Comp_EN : out STD_LOGIC; -- Enable the Comparator in ALU
            Jump_Flag : out STD_LOGIC;
+           Board_Switches : in STD_LOGIC_VECTOR(3 downto 0);
+           Confirm_Button : in STD_LOGIC;
+           Input_Ready_LED : out STD_LOGIC;
            Address_to_Jump : out STD_LOGIC_VECTOR (2 downto 0));
 end Instruction_Decoder;
 
@@ -54,7 +57,7 @@ signal FuncValue : std_logic_vector (2 downto 0);
 begin
     Operator <= Instruction_Bus(12 downto 10);
 
-    process (Operator, Instruction_Bus, Reg_Check_Jump,FuncValue) begin
+    process (Operator, Instruction_Bus, Reg_Check_Jump, FuncValue, Confirm_Button, Board_Switches) begin
         Jump_Flag <= '0';
         Flag_EN <= '0';
         Comp_EN <= '0';
@@ -119,10 +122,14 @@ begin
             Reg_EN <= Instruction_Bus(9 downto 7);
             Func <= "011"; 
             
-        elsif Operator = "111" then --load  
-            Immediate_Value <= Instruction_Bus(3 downto 0);            
-            Reg_EN <= Instruction_Bus(9 downto 7);
-            Load_Sele <= '1';                     
+        elsif Operator = "111" then -- load from board switches
+                Input_Ready_LED <= '1';  -- Turn on LED to indicate waiting for input
+                if Confirm_Button = '1' then
+                    Immediate_Value <= Board_Switches;  -- Load value from switches
+                    Reg_EN <= Instruction_Bus(9 downto 7); -- Destination register
+                    Load_Sele <= '1';
+                    Input_Ready_LED <= '0';  -- Turn off LED after input is confirmed
+                end if;                    
         end if;
     end process;
 end Behavioral;

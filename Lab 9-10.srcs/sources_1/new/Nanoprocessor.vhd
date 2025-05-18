@@ -38,6 +38,9 @@ entity Nano_Processor is
            Dis_LED : out STD_LOGIC_VECTOR (3 downto 0);
            Dis_7Seg : out STD_LOGIC_VECTOR (6 downto 0);
            Comparator_out : out STD_LOGIC_VECTOR (2 downto 0);
+           SW  : in STD_LOGIC_VECTOR(3 downto 0);  -- Board switches
+           BTN : in STD_LOGIC;                    -- Confirm button
+           LED : out STD_LOGIC;                   -- LED for input ready
            AnodeSelector : out STD_LOGIC_VECTOR (3 downto 0)
            );
 end Nano_Processor;
@@ -99,6 +102,9 @@ component Instruction_Decoder
            Reg_EN : out STD_LOGIC_VECTOR (2 downto 0);
            Flag_EN : out STD_LOGIC;
            Comp_EN : out STD_LOGIC;
+           Board_Switches  : in STD_LOGIC_VECTOR (3 downto 0);
+           Confirm_Button  : in STD_LOGIC;
+           Input_Ready_LED : out STD_LOGIC;
            Jump_Flag : out STD_LOGIC;
            Address_to_Jump : out STD_LOGIC_VECTOR (2 downto 0));
 end component;
@@ -160,6 +166,9 @@ signal R0_Out,R1_Out,R2_Out,R3_Out,R4_Out,R5_Out,R6_Out,R7_Out : std_logic_vecto
 
 signal ALU_Output, Flag_Reg  : std_logic_vector (3 downto 0);
 signal Func  : std_logic_vector (2 downto 0);
+
+signal Input_Ready_LED_internal : STD_LOGIC;
+
 begin
 
     Slow_Clock : Slow_Clk
@@ -198,6 +207,9 @@ begin
             Load_Sele => Load_sele,
             Reg_EN => Reg_EN,
             Flag_EN => Flag_EN_ALU,
+            Board_Switches  => SW,               -- Connect to board switches
+            Confirm_Button  => BTN,              -- Connect to confirm button
+            Input_Ready_LED => Input_Ready_LED_internal,
             Comp_EN => Comp_EN_ALU,
             Jump_Flag => Jump_Flag,
             Address_to_Jump => Address_to_Jump);
@@ -276,7 +288,7 @@ begin
             data => Dis_7Seg
          );
 
- 
+LED <= Input_Ready_LED_internal;
 Display_out <= R7_Out; 
 Flags <= Flag_Reg;  
 Dis_LED <= Display_out;

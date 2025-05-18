@@ -49,6 +49,9 @@ component Instruction_Decoder
            Flag_EN : out STD_LOGIC; -- Enable the Flags in ALU
            Comp_EN : out STD_LOGIC; -- Enable the Comparator in ALU           
            Jump_Flag : out STD_LOGIC;
+           Board_Switches : in STD_LOGIC_VECTOR(3 downto 0);
+           Confirm_Button : in STD_LOGIC;
+           Input_Ready_LED : out STD_LOGIC;
            Address_to_Jump : out STD_LOGIC_VECTOR (2 downto 0));
 end component;
 
@@ -56,6 +59,9 @@ signal Instruction_Bus : STD_LOGIC_VECTOR (12 downto 0);
 signal Reg_Check_Jump, Immediate_Value : STD_LOGIC_VECTOR (3 downto 0);
 signal Reg_Sele1, Reg_Sele2, Reg_EN, Address_to_Jump, Func : STD_LOGIC_VECTOR (2 downto 0);
 signal Flag_EN,Comp_EN, Load_Sele, Jump_Flag : STD_LOGIC;
+signal Board_Switches     : STD_LOGIC_VECTOR(3 downto 0);
+signal Confirm_Button     : STD_LOGIC;
+signal Input_Ready_LED    : STD_LOGIC;
 
 begin
 UUT : Instruction_Decoder port map(
@@ -70,37 +76,49 @@ UUT : Instruction_Decoder port map(
         Load_Sele => Load_Sele,
         Reg_EN => Reg_EN,
         Jump_Flag => Jump_Flag,
-        Address_to_Jump => Address_to_Jump
+        Address_to_Jump => Address_to_Jump,
+        Board_Switches => Board_Switches,
+        Confirm_Button => Confirm_Button,
+        Input_Ready_LED => Input_Ready_LED
      );
 
         
 stimulus_process: process
      begin
      
-     Instruction_Bus <= "101110000011";  
+     Board_Switches <= "0011";
      wait for 100 ns;
+         
+     Instruction_Bus <= "1111110000011"; -- opcode 111, dest reg = 111
+     wait for 200 ns;
+         
+     Confirm_Button <= '1';
+     wait for 100 ns;
+     
+     Confirm_Button <= '0';
+     wait for 1000 ns;
  
-     Instruction_Bus <= "100100000011";  
-     wait for 100 ns;
+     --Instruction_Bus <= "0100100000011";  
+     --wait for 100 ns;
  
-     Instruction_Bus <= "100010000001";  
-     wait for 100 ns;
+     --Instruction_Bus <= "0100010000001";  
+     --wait for 100 ns;
  
-     Instruction_Bus <= "010010000000";  
-     wait for 100 ns;
+     --Instruction_Bus <= "0010010000000";  
+     --wait for 100 ns;
       
-     Instruction_Bus <= "000100010010";  
-     wait for 100 ns;
+     --Instruction_Bus <= "0000100010010";  
+     --wait for 100 ns;
  
-     Instruction_Bus <= "001110100111";  
-     wait for 100 ns;
+     --Instruction_Bus <= "0001110100111";  
+     --wait for 100 ns;
  
-     Instruction_Bus <= "110100000100";  
-     Reg_Check_Jump <= "0010";
-     wait for 100 ns;
+     --Instruction_Bus <= "0110100000100";  
+     --Reg_Check_Jump <= "0010";
+     --wait for 100 ns;
 
-     Reg_Check_Jump <= "0010";
-     wait for 100 ns;             
+     --Reg_Check_Jump <= "0010";
+     --wait for 100 ns;             
      
      end process stimulus_process;
      
